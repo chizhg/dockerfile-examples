@@ -26,8 +26,6 @@ tasks:
   - name: source
     workspace: default-workspace
   taskSpec:
-    managedSidecars:
-    - PRIVILEGED_DOCKER_DAEMON
     workspaces:
     - name: source
     results:
@@ -48,8 +46,10 @@ tasks:
         digest:
           type: string
     steps:
-    - image: gcr.io/cloud-builders/docker
+    - image: us-docker.pkg.dev/gcb-catalog-release/preview/docker/cli
       script: |
+        export DOCKER_HOST="tcp://docker-host:2375"
+        docker-credential-gcr  configure-docker -include-artifact-registry
         docker build -t us-central1-docker.pkg.dev/chizhg-louhi-test/google-cloud-build-example/sample-image-01-25:latest $(workspaces.source.path)/cloudbuild-test
         docker push us-central1-docker.pkg.dev/chizhg-louhi-test/google-cloud-build-example/sample-image-01-25:latest
         image_uri="us-central1-docker.pkg.dev/chizhg-louhi-test/google-cloud-build-example/sample-image-01-25"
