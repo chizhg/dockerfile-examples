@@ -8,7 +8,7 @@ tasks:
     - name: repository
       value: gcb-catalog.googlesource.com/git-tkn
     - name: revision
-      value: main
+      value: 90e80eb23450195c3e1c4309989ac63a91366b0a
     - name: pathInRepo
       value: task/git-clone/git-clone.yaml
   params:
