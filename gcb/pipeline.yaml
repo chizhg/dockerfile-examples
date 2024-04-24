@@ -1,7 +1,15 @@
 workspaces:
 - name: default-workspace
+params:
+- name: _LOUHI_REF_SHA
+- name: _LOUHI_REPOSITORY_URL
 tasks:
 - name: clone-repo
+  params:
+  - name: revision
+    value: $(params._LOUHI_REF_SHA)  # injected by Louhi when running the workflow
+  - name: url
+    value: $(params._LOUHI_REPOSITORY_URL) # injected by Louhi when running the workflow
   taskRef:
     resolver: gcb-repo
     params:
@@ -11,21 +19,24 @@ tasks:
       value: 90e80eb23450195c3e1c4309989ac63a91366b0a
     - name: pathInRepo
       value: task/git-clone/git-clone.yaml
-  params:
-  - name: revision
-    value: $(params._LOUHI_REF_SHA)  # injected by Louhi when running the workflow
-  - name: url
-    value: $(params._LOUHI_REPOSITORY_URL) # injected by Louhi when running the workflow
   workspaces:
   - name: output
     workspace: default-workspace
 - name: docker-build-push
+  params:
+  - name: _LOUHI_REF_SHA
+    value: $(params._LOUHI_REF_SHA)
+  - name: _LOUHI_REPOSITORY_URL
+    value: $(params._LOUHI_REPOSITORY_URL)
   runAfter:
   - "clone-repo"
   workspaces:
   - name: source
     workspace: default-workspace
   taskSpec:
+    params:
+    - name: _LOUHI_REF_SHA
+    - name: _LOUHI_REPOSITORY_URL
     workspaces:
     - name: source
     results:
@@ -56,3 +67,4 @@ tasks:
         image_digest="$(docker images --no-trunc --quiet us-central1-docker.pkg.dev/chizhg-louhi-test/google-cloud-build-example/sample-image-01-25:latest)"
         echo -n "{\"uri\":\"${image_uri}\",\"digest\":\"${image_digest}\"}" | tee $(results.image-ARTIFACT_OUTPUTS.path)
         echo -n "{\"uri\":\"$(params._LOUHI_REPOSITORY_URL)\",\"digest\":\"$(params._LOUHI_REF_SHA)\"}" | tee $(results.image-ARTIFACT_INPUTS.path)
+
