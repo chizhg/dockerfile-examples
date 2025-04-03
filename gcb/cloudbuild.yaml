@@ -1,0 +1,22 @@
+# [START cloudbuild_go_test_yaml]
+steps:
+  # [START cloudbuild_go_image_yaml]
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 
+           'us-central1-docker.pkg.dev/louhi-resources/pre-promotion-images/google-cloud-build-example/myimage:2023-05-08', '-f', 'cloudbuild-test/Dockerfile', '.']
+  # [END cloudbuild_go_image_yaml]
+
+# Store images in Google Artifact Registry
+images:
+  - us-central1-docker.pkg.dev/louhi-resources/pre-promotion-images/google-cloud-build-example/myimage:2023-05-08
+# [END cloudbuild_go_yaml]
+
+# Describes which Git repository GCB will pull
+dependencies:
+  - gitSource:
+      repository:
+        url: "${_LOUHI_REPOSITORY_URL}" # Auto-populated with the Flow's repository
+      revision: "${_LOUHI_REF_SHA}"     # Auto-populated with the trigger sha or repository branch HEAD (in that order)
+      destPath: "."
+
