@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ 'master' ]
 jobs:
-  my-job:
+  my-job-presubmit:
     runs-on: ubuntu-latest
     steps:
       - name: my-step
