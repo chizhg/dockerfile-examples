@@ -3,7 +3,7 @@ on:
   push:
     branches: [ 'master' ]
 jobs:
-  my-job:
+  my-job-postsubmit:
     runs-on: ubuntu-latest
     steps:
       - name: my-step
