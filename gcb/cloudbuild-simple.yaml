@@ -11,6 +11,6 @@ steps:
 dependencies:
   - gitSource:
       repository:
-        developerConnect: "projects/louhi-test/locations/us-central1/connections/louhi-github-developer-connect-porcupine/gitRepositoryLinks/porc-jul10-frontend"
+        developerConnect: "projects/louhi-test/locations/us-central1/connections/louhi-github-developer-connect-porcupine/gitRepositoryLinks/${_REPOSITORY_NAME}"
       revision: "${_REF_SHA}"
       destPath: "."
