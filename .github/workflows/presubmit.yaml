@@ -4,7 +4,11 @@ on:
     branches: [ 'master' ]
 jobs:
   my-job-presubmit:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: default
+      labels: arc-runners
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14'
