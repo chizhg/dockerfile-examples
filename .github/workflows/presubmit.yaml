@@ -12,3 +12,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '14'
+      - name: Sleep for 30 seconds
+        shell: bash
+        run: |
+          for i in {1..60}
+          do
+            echo "hello"
+            sleep 5
+          done
+          
+          echo "Loop finished after 5 minutes."
