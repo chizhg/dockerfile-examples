@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ 'master' ]
 jobs:
-  my-job-presubmit:
+  job-with-arc-runners:
     runs-on:
       group: default
       labels: arc-runners
@@ -12,7 +12,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '14'
-      - name: Sleep for 30 seconds
+      - name: Demo for workflow commands
+        shell: bash
+        run: |
+          echo "::debug::Set the Octocat variable"
+          echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+          echo "::warning file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+          echo "::error file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+          echo "::group::My group log title"
+          echo "Inside group log line 1"
+          echo "Inside group log line 2"
+          echo "Inside group log line 3"
+          echo "::endgroup::"
+          echo "::add-mask::Mona The Octocat"
+          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+          cat << EOF >> $GITHUB_STEP_SUMMARY
+          - This is list entry one.
+          - This is list entry two.
+          - And this is list entry three.
+          - And this is a [Louhi link](https://louhi.corp.goog)
+          EOF
+      - name: Sleep for 300 seconds
         shell: bash
         run: |
           for i in {1..60}
